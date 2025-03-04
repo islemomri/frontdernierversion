@@ -1,0 +1,99 @@
+<p-table #dt [value]="directions" selectionMode="multiple" [(selection)]="selectedDirections"
+    [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]"
+    [globalFilterFields]="['id', 'nom_direction']" [tableStyle]="{ 'min-width': '50rem' }">
+    
+    <ng-template #caption>
+        <div class="flex justify-between pb-4">
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" [(ngModel)]="searchText" (input)="dt.filterGlobal(searchText, 'contains')" placeholder="Rechercher..." />
+            </span>
+            <p-button icon="pi pi-external-link" label="Export" (click)="exportDirections()" />
+        </div>
+    </ng-template>
+
+    <ng-template #header>
+        <tr>
+            <th>ID</th>
+            <th>Nom de la Direction</th>
+            <th>Actions</th>
+        </tr>
+    </ng-template>
+
+    <ng-template #body let-direction>
+        <tr [pSelectableRow]="direction">
+            <td>{{ direction.id }}</td>
+            <td>{{ direction.nom_direction }}</td>
+
+                <td class="flex gap-2">
+              
+                    <button class="b" (click)="deleteDirection(direction)">
+                        <svg fill="none" height="24" viewBox="0 0 24 24" width="24" class="svg-icon">
+                            <g
+                              clip-rule="evenodd"
+                              fill-rule="evenodd"
+                              stroke="red"
+                              stroke-linecap="round"
+                              stroke-width="2"
+                            >
+                              <path
+                                d="m3 7h17c.5523 0 1 .44772 1 1v11c0 .5523-.4477 1-1 1h-16c-.55228 0-1-.4477-1-1z"
+                              ></path>
+                              <path
+                                d="m3 4.5c0-.27614.22386-.5.5-.5h6.29289c.13261 0 .25981.05268.35351.14645l2.8536 2.85355h-10z"
+                              ></path>
+                            </g>
+                          </svg>
+                        <span class="lable">Désarchiver</span>
+                      </button>
+                      
+                      <button class="b update-btn"  (click)="openEditDialog(direction)">
+                        <i class="pi pi-pencil" style="color: green; font-size: 1.2rem;"></i>
+                        <span class="lable update">modifier</span>
+                      </button>
+                                  
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<!-- Dialog pour modifier une direction -->
+<p-dialog header="Edit Direction" [(visible)]="visible" [style]="{ width: '25rem' }">
+    <span class="p-text-secondary block mb-4">Modifier la direction.</span>
+
+    <div class="flex items-center gap-6 mb-6">
+        <label for="directionName" class="font-semibold w-24">Nom</label>
+        <input pInputText id="directionName" class="flex-auto" [(ngModel)]="selectedDirection.nom_direction" autocomplete="off" />
+    </div>
+
+    <div class="flex justify-end gap-4">
+        <p-button label="Cancel" severity="secondary" (click)="visible = false" />
+        <p-button label="Save" (click)="saveDirection()" />
+    </div>
+</p-dialog>
+
+<!-- Bouton pour ajouter une nouvelle direction -->
+<div class="flex items-center justify-center h-screen">
+    <button type="button" class="button" (click)="showAddDirectionDialog()">
+        <span class="button__text">Ajouter une direction</span>
+        <span class="button__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" height="24" fill="none" class="svg">
+                <line y2="19" y1="5" x2="12" x1="12"></line>
+                <line y2="12" y1="12" x2="19" x1="5"></line>
+            </svg>
+        </span>
+    </button>
+</div>
+
+<!-- Dialog pour ajouter une nouvelle direction -->
+<p-dialog header="Ajouter une Direction" [(visible)]="showDialog" [style]="{ 'width': '25rem' }">
+    <div class="flex items-center gap-6 mb-6">
+        <label for="directionName" class="font-semibold w-24">Nom</label>
+        <input pInputText id="directionName" [(ngModel)]="newDirection.nom_direction" autocomplete="off" />
+    </div>
+
+    <div class="flex justify-end gap-4">
+        <p-button label="Cancel" severity="secondary" (click)="showDialog = false" />
+        <p-button label="Save" (click)="addDirection()" />
+    </div>
+</p-dialog>

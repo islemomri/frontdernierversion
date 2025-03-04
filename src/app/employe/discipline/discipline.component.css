@@ -1,0 +1,151 @@
+/* Styles généraux */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    padding: 20px;
+  }
+  
+  .card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px;
+  }
+  
+  .card h2 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: #2c3e50;
+  }
+  
+  .card-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .add-button {
+    margin-bottom: 20px;
+  }
+  
+  .divider {
+    margin: 20px 0;
+    border-top: 1px solid #ccc;
+  }
+  
+  .list-container {
+    margin-bottom: 30px;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .table th, .table td {
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .table th {
+    background-color: #f1f1f1;
+    color: #555;
+  }
+  
+  .table td {
+    background-color: #fff;
+    border: 1px solid #ddd;
+  }
+  
+  .table tr:hover {
+    background-color: #f9f9f9;
+  }
+  
+  .action-button {
+    margin-right: 10px;
+  }
+  
+  /* Form Actions */
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+  }
+  
+  .btn-secondary {
+    background-color: #e0e0e0;
+    color: #333;
+  }
+  
+  .btn-primary {
+    background-color: #3498db;
+    color: #fff;
+  }
+  
+  .btn-secondary, .btn-primary {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .text-danger {
+    color: red;
+    font-size: 12px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  form {
+    padding: 20px;
+  }
+  
+  p-dialog {
+    width: 400px;
+  }
+  .empty-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #eafaf1; /* Fond vert clair */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .empty-icon {
+    font-size: 40px; /* Taille de l'emoji */
+    margin-right: 15px;
+    color: #28a745; /* Couleur de l'emoji en vert */
+  }
+  
+  .empty-text {
+    font-family: 'Arial', sans-serif;
+    color: #2d3e50; /* Couleur du texte principale */
+  }
+  
+  .empty-text p {
+    margin: 0;
+    font-size: 18px;
+  }
+  
+  .empty-text strong {
+    color: #28a745; /* Couleur verte pour "Bravo !" */
+    font-size: 20px;
+  }
+    

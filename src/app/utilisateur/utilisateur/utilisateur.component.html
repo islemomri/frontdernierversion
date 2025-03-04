@@ -1,0 +1,81 @@
+<h2>Liste des Utilisateurs</h2>
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<p-table [value]="utilisateurs" [tableStyle]="{ 'min-width': '50rem' }">
+   
+    <ng-template pTemplate="header">
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Email</th>
+            <th>Nom d'utilisateur</th>
+            <th>Rôle</th>
+            <th>Action</th>
+        </tr>
+    </ng-template>
+
+    
+    <ng-template pTemplate="body" let-utilisateur>
+        <tr>
+            <td>{{ utilisateur.id }}</td>
+            <td>{{ utilisateur.nom }}</td>
+            <td>{{ utilisateur.prenom }}</td>
+            <td>{{ utilisateur.email }}</td>
+            <td>{{ utilisateur.username}}</td>
+            <td>
+                <p-tag [severity]="getSeverity(utilisateur.role)" [value]="capitalizeFirstLetter(utilisateur.role)"></p-tag>
+            </td>
+            <td>
+                <button pButton  icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger"
+                        (click)="deleteUtilisateur(utilisateur.id)">
+                </button>
+            </td>
+            <td>
+                <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm p-button-warning"
+                        (click)="openEditDialog(utilisateur)">
+                </button>
+            </td>
+            <td>
+                <button pButton icon="pi pi-refresh" label="Réinitialiser" class="p-button-text p-button-sm p-button-info"
+                        (click)="resetPassword(utilisateur.id, utilisateur.nom)">
+                </button>
+            </td>
+            
+              
+              
+        </tr>
+    </ng-template>
+</p-table>
+<p-dialog [(visible)]="displayDialog" header="Modifier l'utilisateur" [modal]="true" [closable]="false" [style]="{width: '30vw'}">
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="nom">Nom </label>
+        <input id="nom" pInputText [(ngModel)]="utilisateurSelectionne.nom">
+      </div>
+      <div class="p-field">
+        <label for="prenom">Prénom </label>
+        <input id="prenom" pInputText [(ngModel)]="utilisateurSelectionne.prenom" style="margin-top: 10px;">
+      </div>
+      <div class="p-field">
+        <label for="email">Email </label>
+        <input id="email" pInputText [(ngModel)]="utilisateurSelectionne.email" style="margin-top: 10px;">
+      </div>
+      <div class="p-field">
+        <label for="username">Nom d'utilisateur </label>
+        <input id="username" pInputText [(ngModel)]="utilisateurSelectionne.username" style="margin-top: 10px;">
+      </div>
+    </div>
+    
+    <ng-template pTemplate="footer">
+      <button pButton label="Annuler" icon="pi pi-times" class="p-button-text" (click)="displayDialog = false" severity="danger"></button>
+      <button pButton label="Enregistrer" icon="pi pi-check" class="p-button-text" (click)="updateUtilisateur()" severity="success"></button>
+    </ng-template>
+  </p-dialog>
+  <p-dialog [(visible)]="passwordDialogVisible" header="Mot de passe réinitialisé" [modal]="true">
+    <p>Le nouveau mot de passe est : <strong>{{ newPassword }}</strong></p>
+    <ng-template pTemplate="footer">
+        <button pButton label="OK" icon="pi pi-check" class="p-button-text" (click)="passwordDialogVisible = false"></button>
+    </ng-template>
+</p-dialog>

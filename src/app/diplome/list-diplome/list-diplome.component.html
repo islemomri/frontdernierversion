@@ -1,0 +1,84 @@
+<div class="card p-4 diplome-container">
+  <h3 class="section-title">🎓 Diplômes de l'employé</h3>
+
+  <form [formGroup]="diplomeForm" (ngSubmit)="addOrUpdateDiplome()" class="form-group">
+    <div class="form-field">
+      <label for="libelle">Libellé :</label>
+      <input id="libelle" type="text" formControlName="libelle" class="p-inputtext p-mb-2" required />
+    </div>
+
+    <div class="form-field">
+      <label for="typeDiplome">Type de Diplôme :</label>
+      <p-dropdown 
+        id="typeDiplome"
+        [options]="typeDiplomes" 
+        optionLabel="libelleTypeDiplome"
+        optionValue="id"
+        formControlName="typeDiplomeId"
+        placeholder="Sélectionner un type">
+      </p-dropdown>
+    </div>
+
+    <div class="button-group">
+      <p-button 
+        
+        [label]="isEditing ? 'Modifier' : 'Ajouter'" 
+        [icon]="isEditing ? 'pi pi-check' : 'pi pi-plus'"
+        [severity]="isEditing ? 'success' : 'primary'"
+        type="submit">
+      </p-button>
+
+      <p-button 
+        variant="outlined"
+        label="Annuler" 
+        icon="pi pi-times" 
+        severity="danger" 
+        *ngIf="isEditing" 
+        (click)="resetForm()">
+      </p-button>
+    </div>
+  </form>
+
+  <div class="table-container">
+    <table class="p-datatable">
+      <thead>
+        <tr>
+          <th>📄 Libellé</th>
+          <th>🏅 Type</th>
+          <th>⚙️ Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let diplome of diplomes">
+          <td>{{ diplome.libelle }}</td>
+          <td>{{ diplome.typeDiplome?.libelleTypeDiplome }}</td>
+          <td>
+            <p-button 
+              icon="pi pi-pencil" 
+              severity="warn" 
+              [rounded]="true" 
+              [text]="true" 
+              (click)="editDiplome(diplome)">
+            </p-button>
+
+            <p-button 
+              icon="pi pi-trash" 
+              severity="danger" 
+              [rounded]="true" 
+              [text]="true" 
+              (click)="deleteDiplome(diplome.id!)">
+            </p-button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="diplomes.length === 0" class="empty-message">
+      <div class="empty-icon">🎓</div>
+      <div class="empty-text">
+        <p><strong>Oups !</strong> Aucun diplôme trouvé pour cet employé.</p>
+        <p class="secondary-message">Ajoutez un diplôme pour enrichir son dossier.</p>
+      </div>
+    </div>
+  </div>
+</div>

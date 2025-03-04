@@ -1,0 +1,57 @@
+<div class="card">
+  
+    
+  <h2>Gestion des Types de Diplômes</h2>
+    <p-button label="Ajouter un Type de Diplôme" icon="pi pi-plus" severity="secondary" (click)="showAddDialog()"></p-button>
+
+ 
+    <p-table [value]="typeDiplomes" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Libellé</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-typeDiplome>
+        <tr>
+          <td>{{ typeDiplome.libelleTypeDiplome }}</td>
+          <td>
+            <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm" (click)="showEditDialog(typeDiplome)"></button>
+            <button pButton icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger" (click)="archiver(typeDiplome.id)"></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <!-- Boîte de dialogue pour ajouter un type de diplôme -->
+<p-dialog header="Ajouter un Type de Diplôme" [(visible)]="visibleAdd" [modal]="true" [style]="{ width: '25rem' }">
+  <form [formGroup]="typeDiplomeForm">
+    <div class="flex flex-column gap-3">
+      <label for="libelleTypeDiplome">Libellé :</label>
+      <input pInputText id="libelleTypeDiplome" formControlName="libelleTypeDiplome" class="p-inputtext p-component" />
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+      <button pButton label="Annuler" icon="pi pi-times" class="p-button-text" (click)="visibleEdit = false" severity="danger"></button>
+        <button pButton label="Enregistrer" icon="pi pi-check" class="p-button-text" (click)="addTypeDiplome()"  type="submit" severity="success"></button>
+    </div>
+  </form>
+</p-dialog>
+  
+  <!-- Formulaire de modification de type de diplôme -->
+  <p-dialog header="Modifier le Type de Diplôme" [(visible)]="visibleEdit" [modal]="true" [style]="{ width: '25rem' }">
+    <form [formGroup]="editTypeDiplomeForm">
+      <div class="flex flex-column gap-3">
+        <label for="editLibelle">Libellé :</label>
+        <input pInputText id="editLibelle" formControlName="libelleTypeDiplome" class="p-inputtext p-component" />
+      </div>
+  
+      <div class="flex justify-end gap-2 mt-4">
+        <button pButton label="Annuler" icon="pi pi-times" class="p-button-text" (click)="visibleEdit = false" severity="danger"></button>
+        <button pButton label="Enregistrer" icon="pi pi-check" class="p-button-text" (click)="updateTypeDiplome()"  type="submit" severity="success"></button>
+      </div>
+    </form>
+    
+  </p-dialog>
+  

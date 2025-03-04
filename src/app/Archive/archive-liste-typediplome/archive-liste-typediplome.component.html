@@ -1,0 +1,41 @@
+<div class="card">
+  
+    
+    <h2>Gestion des Types de Diplômes</h2>
+    
+  
+   
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Libellé</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let typeDiplome of typeDiplomes">
+            <td>{{ typeDiplome.libelleTypeDiplome }}</td>
+            <td>
+              <p-button icon="pi pi-pencil" severity="warn" [rounded]="true" [text]="true" (click)="showEditDialog(typeDiplome)"></p-button>
+              <p-button icon="pi pi-times" severity="danger" [rounded]="true" [text]="true"  (click)="deleteTypeDiplome(typeDiplome.id)"></p-button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+     <!-- Formulaire de modification de type de diplôme -->
+     <p-dialog header="Modifier le Type de Diplôme" [(visible)]="visibleEdit" [modal]="true" [style]="{ width: '25rem' }">
+        <form [formGroup]="editTypeDiplomeForm">
+          <div class="flex flex-column gap-3">
+            <label for="editLibelle">Libellé :</label>
+            <input pInputText id="editLibelle" formControlName="libelleTypeDiplome" class="p-inputtext p-component" />
+          </div>
+      
+          <div class="flex justify-end gap-2 mt-4">
+            <p-button label="Annuler" severity="secondary" (click)="visibleEdit = false"></p-button>
+            <p-button label="Enregistrer" (click)="updateTypeDiplome()"></p-button>
+          </div>
+        </form>
+        
+      </p-dialog>
+      

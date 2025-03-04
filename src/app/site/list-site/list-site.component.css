@@ -1,0 +1,276 @@
+/* From Uiverse.io by andrew-demchenk0 */ 
+.button {
+    position: relative;
+    width: 150px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border: 1px solid #34974d;
+    background-color: #3aa856;
+  }
+  
+  .button, .button__icon, .button__text {
+    transition: all 0.3s;
+  }
+  
+  .button .button__text {
+    transform: translateX(30px);
+    color: #fff;
+    font-weight: 600;
+  }
+  
+  .button .button__icon {
+    position: absolute;
+    transform: translateX(109px);
+    height: 100%;
+    width: 39px;
+    background-color: #34974d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .button .svg {
+    width: 30px;
+    stroke: #fff;
+  }
+  
+  .button:hover {
+    background: #34974d;
+  }
+  
+  .button:hover .button__text {
+    color: transparent;
+  }
+  
+  .button:hover .button__icon {
+    width: 148px;
+    transform: translateX(0);
+  }
+  
+  .button:active .button__icon {
+    background-color: #2e8644;
+  }
+  
+  .button:active {
+    border: 1px solid #2e8644;
+  }
+  /* Optimisation du tableau */
+.custom-table {
+  width: 100%; /* Largeur du tableau */
+  font-size: 0.9rem; /* Réduire la taille de la police */
+}
+
+.custom-table th {
+  text-align: left;
+  font-weight: bold;
+  background-color: #f5f5f5; /* Couleur de fond des en-têtes */
+  padding: 0.5rem;
+}
+
+.custom-table td {
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.export-btn {
+  margin-top: 1rem;
+}
+
+/* Boutons */
+/* Modifier la largeur du bouton */
+/* Modifier la marge du bouton pour le décaler vers la droite */
+.button {
+  position: relative;
+  width: auto;
+  min-width: 200px; /* Largeur minimale du bouton */
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border: 1px solid #34974d;
+  background-color: #3aa856;
+  padding: 0 20px;
+  margin-left: 46%; /* Déplacer le bouton à droite */
+ /* Optionnel : ajuster la marge droite si besoin */
+}
+
+
+/* Adapter la taille de l'icône */
+.button .button__icon {
+  position: absolute;
+  transform: translateX(120px); /* Ajuster l'icône plus loin pour éviter qu'elle chevauche le texte */
+  height: 100%;
+  width: 40px;
+  background-color: #34974d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Augmenter l'espace entre l'icône et le texte */
+.button .button__text {
+  transform: translateX(0); /* Ajuste la position du texte pour qu'il soit mieux aligné */
+  color: #fff;
+  font-weight: 600;
+  padding-right: 10px; /* Un peu plus d'espace avant l'icône */
+}
+
+.button .svg {
+  width: 30px;
+  stroke: #fff;
+}
+
+/* Effet de survol */
+.button:hover {
+  background: #34974d;
+}
+
+.button:hover .button__text {
+  color: transparent;
+}
+
+.button:hover .button__icon {
+  width: 148px;
+  transform: translateX(0);
+}
+
+.button:active .button__icon {
+  background-color: #2e8644;
+}
+
+.button:active {
+  border: 1px solid #2e8644;
+}
+
+
+
+/* Espacement des éléments */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.gap-6 {
+  gap: 1.5rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.mt-6 {
+  margin-top: 1.5rem;
+}
+
+/* Agrandissement du p-dialog */
+p-dialog {
+  padding: 2rem !important;
+}
+
+/* Optimisation du p-multiselect */
+p-multiselect {
+  max-height: 3rem !important;
+}
+::ng-deep p-dialog {
+  height: auto !important; /* Hauteur dynamique */
+  max-height: 80vh !important; /* Limite pour éviter de dépasser l'écran */
+}
+::ng-deep p-multiselect .p-multiselect-panel {
+  max-height: 50vh !important; /* Permet d'afficher plus d'éléments */
+  overflow-y: auto; /* Ajoute un défilement si nécessaire */
+}
+/* Utiliser des marges au lieu de <br> */
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+.map-container {
+  transition: height 0.3s ease-in-out;
+}
+.p-dialog .map-container {
+  max-height: 500px; /* Ajustez si nécessaire */
+  min-height: 300px; /* Ajustez selon la taille minimale de votre carte */
+}
+
+
+
+
+
+/* From Uiverse.io by andrew-demchenk0 */ 
+.b {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 12px 8px 16px;
+  gap: 8px;
+  height: 40px;
+  width: 128px;
+  border: none;
+  background:transparent;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.lable {
+  margin-top: 1px;
+  font-size: 19px;
+  line-height: 22px;
+  color: red;
+  letter-spacing: 1px;
+}
+
+.b:hover {
+  background: #e9a4a849;
+}
+
+.b:hover .svg-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(-8deg);
+  }
+
+  50% {
+    transform: rotate(0deg);
+  }
+
+  75% {
+    transform: rotate(8deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+td.flex {
+  display: flex;
+  gap: 8px; /* Espacement entre les boutons */
+  align-items: center;
+}
+
+
+.update-btn:hover {
+  background: #a4e9a449;
+}
+
+.update {
+  color: green;
+}

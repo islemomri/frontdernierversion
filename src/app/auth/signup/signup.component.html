@@ -1,0 +1,84 @@
+<p-card [style]="{ width: '30rem', margin: 'auto', padding: '2rem' }">
+    <ng-template #title> Créer un compte </ng-template>
+    <form [formGroup]="registerForm" (ngSubmit)="submitForm()">
+        <div class="field">
+            <p-floatlabel variant="in">
+                <input pInputText id="nom" formControlName="nom" class="form-control" />
+                <label for="nom">Nom</label>
+            </p-floatlabel>
+            <small class="p-error" *ngIf="registerForm.controls.nom.invalid && registerForm.controls.nom.touched">
+                *Nom est obligatoire
+            </small>
+        </div>
+
+        <div class="field">
+            <p-floatlabel variant="in">
+                <input pInputText id="prenom" formControlName="prenom" class="form-control" />
+                <label for="prenom">Prénom</label>
+            </p-floatlabel>
+            <small class="p-error" *ngIf="registerForm.controls.prenom.invalid && registerForm.controls.prenom.touched">
+                *Prénom est obligatoire
+            </small>
+        </div>
+
+        <div class="field">
+            <p-floatlabel variant="in">
+                <input pInputText id="username" formControlName="username" class="form-control" />
+                <label for="username">Nom d'utilisateur</label>
+            </p-floatlabel>
+            <small class="p-error" *ngIf="registerForm.controls.username.invalid && registerForm.controls.username.touched">
+                *Nom d'utilisateur obligatoire
+            </small>
+        </div>
+
+        <div class="field">
+            <p-floatlabel variant="in">
+                <input pInputText type="email" id="email" formControlName="email" class="form-control" />
+                <label for="email">Email</label>
+            </p-floatlabel>
+            <small class="p-error" *ngIf="registerForm.controls.email.invalid && registerForm.controls.email.touched">
+                Email invalide
+            </small>
+        </div>
+
+        <div class="field">
+            <p-floatlabel variant="in">
+                <input pPassword id="password" formControlName="password" class="form-control" toggleMask="true" />
+                <label for="password">Mot de passe</label>
+            </p-floatlabel>
+            <small class="p-error" *ngIf="registerForm.controls.password.invalid && registerForm.controls.password.touched">
+                Le mot de passe doit avoir au moins 8 caractères
+            </small>
+        </div>
+
+        <div class="field">
+            <p-floatlabel variant="in">
+                <input pPassword id="confirmPassword" formControlName="confirmPassword" class="form-control" toggleMask="true" />
+                <label for="confirmPassword">Confirmer mot de passe</label>
+            </p-floatlabel>
+            <small class="p-error" *ngIf="registerForm.controls.confirmPassword.invalid && registerForm.controls.confirmPassword.touched">
+                Les mots de passe ne correspondent pas
+            </small>
+        </div>
+
+        <div *ngIf="isAdmin()" class="field">
+            <p-dropdown 
+    [options]="[{label: 'RH', value: 'RH'}, {label: 'Directeur', value: 'DIRECTEUR'}, {label: 'Responsable', value: 'RESPONSABLE'}]" 
+    formControlName="role" 
+    placeholder="Sélectionner un rôle"
+    class="custom-dropdown">
+</p-dropdown>
+</div>
+
+    <p-button 
+        type="submit" 
+        label="Valider" 
+        class="w-full custom-button" 
+        [disabled]="registerForm.invalid"
+        severity="info"
+        variant="outlined"
+        >
+    </p-button>
+
+    </form>
+</p-card>

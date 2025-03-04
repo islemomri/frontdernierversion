@@ -1,0 +1,196 @@
+<p-toolbar styleClass="mb-6">
+    <ng-template #start>
+      <p-button label="New" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
+      <p-button severity="danger" label="Delete" icon="pi pi-trash" outlined  [disabled]="!selectedPostes || !selectedPostes.length" />
+    </ng-template>
+  
+    <ng-template #end>
+      <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" auto customUpload class="mr-2 inline-block" [chooseButtonProps]="{ severity: 'secondary' }" />
+      <p-button label="Export" icon="pi pi-upload" severity="secondary" (onClick)="exportCSV($event)" />
+    </ng-template>
+  </p-toolbar>
+  
+  <p-table
+    #dt
+    [value]="postesemploye"
+    [rows]="10"
+    [columns]="cols"
+    [paginator]="true"
+    [globalFilterFields]="['posteId', 'dateDebut', 'dateFin']"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    [(selection)]="selectedPostes"
+    [rowHover]="true"
+    dataKey="posteId"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true"
+  >
+    <ng-template #caption>
+      <div class="flex items-center justify-between">
+        <h5 class="m-0">Manage Postes</h5>
+        <input pInputText type="text" (input)="onInputChange($event)" placeholder="Search..." />
+      </div>
+    </ng-template>
+  
+    <ng-template #header>
+      <tr>
+        <th style="width: 3rem"><p-tableHeaderCheckbox /></th>
+        <th style="min-width: 16rem"> titre du Poste</th>
+        <th style="min-width: 16rem">  direction </th>
+        <th style="min-width: 16rem">  site </th>
+        <th style="min-width: 16rem">Date Début</th>
+        <th style="min-width: 16rem">Date Fin</th>
+        <th style="min-width: 16rem">Statut</th>
+        <th style="min-width: 12rem"></th>
+      </tr>
+    </ng-template>
+  
+    <ng-template #body let-poste>
+      <tr>
+        <td style="width: 3rem"><p-tableCheckbox [value]="poste" /></td>
+        <td>
+            <div>{{ poste.titre }}</div> <!-- Ajout d'une classe pour le titre -->
+            
+          </td>
+          <td><span class="poste-detail">
+            <i class="pi pi-building" style="margin-right: 5px;"></i>{{ poste.nomDirection }}
+          </span>
+        </td>
+        <td> <span class="poste-detail">
+          <i class="pi pi-map-marker" style="margin-right: 5px;"></i>{{ poste.nomSite }}
+        </span></td>
+          
+        <td>{{ poste.dateDebut | date }}</td>
+        <td>{{ poste.dateFin | date }}</td>
+        <td>
+          <p-badge [value]="getPosteStatus(poste)" [severity]="getBadgeSeverity(poste)" class="status-badge">
+            <i *ngIf="getPosteStatus(poste) === 'En cours'" class="pi pi-spinner pi-spin"></i>
+            <i *ngIf="getPosteStatus(poste) === 'Terminé'" class="pi pi-check-circle"></i>
+          </p-badge>
+        </td>
+        <td>
+          <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="openupdate(poste)" />
+
+          <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deletePoste(poste)" />
+        </td>
+      </tr>
+    </ng-template>
+  
+    <ng-template #summary>
+      <div class="flex items-center justify-between">In total there are {{ postes ? postes.length : 0 }} postes.</div>
+    </ng-template>
+  </p-table>
+  
+  <!-- Dialog for new poste -->
+  <p-dialog header="Create New Poste" [(visible)]="posteDialog" [modal]="true" [closable]="false">
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="poste">Poste</label>
+        <p-dropdown [options]="postes" [(ngModel)]="selectedPoste" optionLabel="titre" (onChange)="onPosteSelect($event)" placeholder="Select Poste"></p-dropdown>
+      </div>
+  
+      <div class="p-field">
+        <label for="direction">Direction</label>
+        <p-dropdown [options]="directions" [(ngModel)]="selectedDirection" optionLabel="nom_direction" (onChange)="onDirectionSelect($event)" placeholder="Select Direction"></p-dropdown>
+      </div>
+  
+      <div class="p-field">
+        <label for="site">Site</label>
+        <p-dropdown 
+  [options]="sites" 
+  [(ngModel)]="selectedSite" 
+  optionLabel="nom_site" 
+  placeholder="Select Site">
+</p-dropdown>
+
+      </div>
+  
+      <div class="p-field">
+        <label for="dateDebut">Date Début</label>
+        <p-calendar [(ngModel)]="poste.dateDebut" id="dateDebut" showIcon></p-calendar>
+      </div>
+  
+      <div class="p-field">
+        <label for="dateFin">Date Fin</label>
+        <p-calendar [(ngModel)]="poste.dateFin" id="dateFin" showIcon></p-calendar>
+      </div>
+    </div>
+  
+    <!-- Affichage du message d'erreur uniquement si errorMessage n'est pas vide -->
+
+<!-- Le reste de votre code HTML -->
+<div *ngIf="errorMessage" class="p-message p-message-warn">
+  <span class="p-message-summary">{{ errorMessage }}</span>
+</div>
+
+      <button pButton type="button" label="Cancel" icon="pi pi-times" (click)="hideDialog()"></button>
+      <button pButton type="button" label="Save" icon="pi pi-check" (click)="savePoste()"></button>
+    
+      
+      
+    
+    </p-dialog>
+    <p-dialog header="Modifier Poste" [(visible)]="updateDialog" [modal]="true" [closable]="true">
+      <div class="p-fluid">
+   
+          <div class="p-field">
+            <label for="titre"><strong>Titre du Poste :</strong></label>
+            <p-dropdown
+              id="titre"
+              [options]="postes"
+              [(ngModel)]="poste"
+              optionLabel="titre"
+              (onChange)="onPosteSelect($event)">
+            </p-dropdown>
+          </div>
+        
+          <div class="p-field">
+            <label for="nomDirection"><strong>Direction :</strong></label>
+            <p-dropdown
+              id="nomDirection"
+              [options]="directions"
+              [(ngModel)]="selectedDirection"
+              optionLabel="nom_direction"
+              placeholder="Select Direction"
+              (onChange)="onDirectionSelect($event)">
+            </p-dropdown>
+          </div>
+          
+          
+        
+      
+      
+          <div class="p-field">
+            <label for="nomSite"><strong>Site :</strong></label>
+            <p-dropdown
+              id="nomSite"
+              [options]="sites"
+              [(ngModel)]="selectedSite"
+              optionLabel="nom_site"
+              placeholder="Select Site">
+            </p-dropdown>
+          </div>
+        
+
+
+      
+    
+        <div class="p-field">
+          <label for="dateDebut"><strong>Date Début :</strong></label>
+          <p-calendar id="dateDebut" [(ngModel)]="selectedPosteDetails.dateDebut" showIcon></p-calendar>
+        </div>
+    
+        <div class="p-field">
+          <label for="dateFin"><strong>Date Fin :</strong></label>
+          <p-calendar id="dateFin" [(ngModel)]="selectedPosteDetails.dateFin" showIcon></p-calendar>
+        </div>
+      </div>
+      <div *ngIf="errorMessageUpdate" class="p-message p-message-warn">
+        <span class="p-message-summary">{{ errorMessageUpdate }}</span>
+      </div>
+    
+      <div class="p-dialog-footer">
+        <button pButton type="button" label="Annuler" icon="pi pi-times" (click)="updateDialog = false"></button>
+        <button pButton type="button" label="modifier" icon="pi pi-check" (click)="modifierPoste(selectedPoste)"></button>
+      </div>
+    </p-dialog>
+    

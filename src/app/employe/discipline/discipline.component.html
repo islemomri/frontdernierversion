@@ -1,0 +1,128 @@
+<div class="card">
+  <h2>Gestion des Disciplines</h2>
+
+  <div class="card-content">
+    <!-- Bouton pour ajouter une nouvelle discipline -->
+    <p-button (click)="showAddDisciplineDialog()" label="Ajouter une discipline" class="add-button"></p-button>
+
+    <!-- Divider -->
+    <div class="divider"></div>
+
+    <!-- Liste des disciplines -->
+    <div class="list-container">
+      <h3>Liste des Disciplines</h3>
+    
+      <div *ngIf="disciplines.length === 0; else disciplineList" class="empty-message">
+        <div class="empty-icon">👍</div>
+    
+        <div class="empty-text">
+            <p><strong>Bravo !</strong> Aucune discipline n'a été attribuée à cet employé, ce qui reflète une gestion optimale de son profil jusqu'à présent.</p>
+        </div>
+    </div>
+    
+      <ng-template #disciplineList>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Date de Début</th>
+              <th>Date de Fin</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let discipline of disciplines">
+              <td>{{ discipline.nom }}</td>
+              <td>{{ discipline.dateDebut | date:'shortDate' }}</td>
+              <td>{{ discipline.dateFin | date:'shortDate' }}</td>
+              <td>
+                <p-button icon="pi pi-pencil" severity="warn" [rounded]="true" [text]="true"
+                    (click)="showEditDisciplineDialog(discipline)" class="action-button">
+                </p-button>
+                <p-button icon="pi pi-times" severity="danger" [rounded]="true" [text]="true"
+                    (click)="deleteDiscipline(discipline.id!)" class="action-button">
+                </p-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-template>
+    </div>
+
+    <!-- Boîte de dialogue pour ajouter une discipline -->
+    <p-dialog header="Ajouter une Discipline" 
+              [(visible)]="addDisciplineVisible" 
+              [modal]="true" 
+              [style]="{ width: '25rem' }" 
+              [draggable]="false" 
+              [resizable]="false"
+              [closable]="true"
+              [dismissableMask]="true">
+
+      <form [formGroup]="disciplineForm" (ngSubmit)="addDiscipline()">
+        <div class="form-group">
+          <label for="nom">Nom de la Discipline :</label>
+          <input id="nom" type="text" formControlName="nom" class="form-control" />
+          <small class="text-danger" *ngIf="disciplineForm.controls['nom'].invalid && disciplineForm.controls['nom'].touched">
+            *Ce champ est obligatoire.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="dateDebut">Date de Début :</label>
+          <input id="dateDebut" type="date" formControlName="dateDebut" class="form-control" />
+          <small class="text-danger" *ngIf="disciplineForm.controls['dateDebut'].invalid && disciplineForm.controls['dateDebut'].touched">
+            *Ce champ est obligatoire.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="dateFin">Date de Fin :</label>
+          <input id="dateFin" type="date" formControlName="dateFin" class="form-control" />
+          <small class="text-danger" *ngIf="disciplineForm.controls['dateFin'].invalid && disciplineForm.controls['dateFin'].touched">
+            *Ce champ est obligatoire.
+          </small>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" (click)="addDisciplineVisible = false" class="btn btn-secondary">Annuler</button>
+          <button type="submit" class="btn btn-primary" [disabled]="disciplineForm.invalid">Ajouter</button>
+        </div>
+      </form>
+    </p-dialog>
+
+    <!-- Boîte de dialogue pour modifier une discipline -->
+    <p-dialog header="Modifier la Discipline" [(visible)]="editDisciplineVisible" [modal]="true" [style]="{ width: '25rem' }" [position]="'center'">
+      <form [formGroup]="editDisciplineForm">
+        <div class="form-group">
+          <label for="editNom">Nom de la Discipline :</label>
+          <input id="editNom" type="text" formControlName="nom" class="form-control" />
+          <small class="text-danger" *ngIf="editDisciplineForm.controls['nom'].invalid && editDisciplineForm.controls['nom'].touched">
+            *Ce champ est obligatoire.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="editDateDebut">Date de Début :</label>
+          <input id="editDateDebut" type="date" formControlName="dateDebut" class="form-control" />
+          <small class="text-danger" *ngIf="editDisciplineForm.controls['dateDebut'].invalid && editDisciplineForm.controls['dateDebut'].touched">
+            *Ce champ est obligatoire.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="editDateFin">Date de Fin :</label>
+          <input id="editDateFin" type="date" formControlName="dateFin" class="form-control" />
+          <small class="text-danger" *ngIf="editDisciplineForm.controls['dateFin'].invalid && editDisciplineForm.controls['dateFin'].touched">
+            *Ce champ est obligatoire.
+          </small>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" (click)="editDisciplineVisible = false" class="btn btn-secondary">Annuler</button>
+          <button type="button" (click)="updateDiscipline()" class="btn btn-primary" [disabled]="editDisciplineForm.invalid">Enregistrer</button>
+        </div>
+      </form>
+    </p-dialog> 
+  </div>
+</div>

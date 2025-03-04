@@ -1,0 +1,23 @@
+<div class="notifications-container">
+    <h2>📩 Notifications</h2>
+
+    <button (click)="markAllAsRead()" class="mark-all-btn">Tout marquer comme lu</button>
+
+    <ul class="notifications-list">
+        <li *ngFor="let notif of notifications" 
+        class="notification-item" 
+        [ngClass]="{'unread': !notif.lue}">
+      <div class="notif-content">
+        <p>{{ notif.message }}</p>
+        <small>{{ notif.dateNotification | date:'short' }}</small>
+      </div>
+      
+      <button pButton (click)="markAsRead(notif.id)" 
+      class="p-button-text p-button-sm"
+              severity="info">📬 Marquer comme lu</button>
+    </li>
+    
+    </ul>
+
+    <p *ngIf="notifications.length === 0" class="no-notifications">Aucune notification</p>
+</div>

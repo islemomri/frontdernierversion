@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+
+    <div class="container" id="container">
+        <p-toast></p-toast>
+        <div class="form-container sign-in-container">
+            <form [formGroup]="loginForm" (ngSubmit)="login()">
+                <h1 >Se Connecter</h1>
+                
+                <p-floatLabel variant="in">
+                    <input pInputText id="username" formControlName="username" class="form-control" />
+                    <label for="username">Nom d'utilisateur</label>
+                </p-floatLabel>
+                <span *ngIf="loginForm.controls['username'].invalid && (loginForm.controls['username'].dirty || loginForm.controls['username'].touched)" class="block p-error">
+                    <div *ngIf="loginForm.controls['username'].errors?.['required']">Email est requis *</div>
+                </span>
+        
+                <p-floatLabel variant="in">
+                    <input type="password" pInputText id="password" formControlName="password" autocomplete="off" />
+                    <label for="password">Mot de passe</label>
+                </p-floatLabel>
+                <span *ngIf="loginForm.controls['password'].invalid && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)" class="block p-error">
+                    <div *ngIf="loginForm.controls['password'].errors?.['required']">Mot de passe est requis *</div>
+                </span>
+
+               <!----> <re-captcha
+                    #recaptcha
+                    formControlName="recaptcha"
+                    siteKey="6LdKeuUqAAAAALWJDMpFu_NlxSow5BANxIbGOq5f"
+                    (resolved)="onCaptchaResolved($event!)">
+                    </re-captcha>
+
+
+        
+                <button type="submit" class="btn btn-login float-right" [disabled]="loginForm.invalid">Valider</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-right">
+                    <h1>Bienvenue !</h1>
+                    <img src="/assets/singup.png" style="width: 300px;height: 200px;">
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.1.0/css/font-awesome.min.css" />
+
+    <title>Gestion des Employés</title>
+</head>
+
+<body>
+
+    <div class="pcss3t pcss3t-effect-scale pcss3t-theme-1">
+        <input type="radio" name="pcss3t" checked id="tab1" class="tab-content-first">
+        <label for="tab1" style="color: #c22870;  font-size: 18px;font-weight: bold;"><i class="icon-user"
+                style="color: #c22870;"></i> Modifier Employé</label>
+
+        <input type="radio" name="pcss3t" id="tab2" class="tab-content-2">
+        <label for="tab2" style="color: #7044e9;font-size: 18px; font-weight: bold;"><i class="icon-book"
+                style="color: #7044e9;"></i> Stage</label>
+
+        <input type="radio" name="pcss3t" id="tab3" class="tab-content-3">
+        <label for="tab3" style="color: #d88921;font-size: 18px;font-weight: bold;"><i class="icon-warning-sign"
+                style="color: #d88921;"></i> Discipline</label>
+
+        <input type="radio" name="pcss3t" id="tab4" class="tab-content-4">
+        <label for="tab4" style="color: #2daa84;font-size: 18px;font-weight: bold;"><i class="icon-briefcase"
+                style="color: #2daa84;"></i> Expérience</label>
+
+        <input type="radio" name="pcss3t" id="tab6" class="tab-content-6">
+        <label for="tab6" style="color: #2012e7;font-size: 18px;font-weight: bold;"><i class="icon-sitemap"
+                style="color: #2012e7;"></i> Diplomes</label>
+
+
+
+        <input type="radio" name="pcss3t" id="tab5" class="tab-content-last">
+        <label for="tab5" style="color: #e71212;font-size: 18px;font-weight: bold;"><i class="icon-sitemap"
+                style="color: #e71212;"></i> Poste</label>
+
+
+        <ul>
+            <!-- Formulaire d'ajout d'employé -->
+            <li class="tab-content tab-content-first">
+                <form [formGroup]="addEmployeeForm" (ngSubmit)="onSubmit()">
+                    <div class="card shadow-sm rounded-lg">
+                        <!-- Card Header -->
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="m-0" style="text-align: center; color: black;">Ajouter un Employé</h3>
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <!-- Informations Personnelles Section -->
+                            <div class="form-section mb-4">
+                                <h4 class="text-secondary">Informations Personnelles</h4>
+                                <div class="row">
+                                    <!-- Nom -->
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="Nom">Nom</label>
+                                            <input pInputText id="Nom" formControlName="Nom" class="form-control"
+                                                readonly />
+                                        </div>
+                                    </div>
+                                    <!-- Prénom -->
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="Prenom">Prénom</label>
+                                            <input pInputText id="Prenom" formControlName="Prenom" class="form-control"
+                                                readonly />
+                                        </div>
+                                    </div>
+                                    <!-- Matricule -->
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="matricule">Matricule</label>
+                                            <input pInputText type="number" id="matricule" formControlName="matricule"
+                                                readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Coordonnées Section -->
+                            <div class="form-section mb-4">
+
+                                <div class="row">
+                                    <!-- Email -->
+                                    <div class="col-md-6">
+                                        <p-floatlabel>
+                                            <input pInputText type="email" id="email" autocomplete="off"
+                                                formControlName="email" class="form-control" />
+                                            <label for="email">Adresse Email</label>
+                                        </p-floatlabel>
+                                        <small class="text-danger"
+                                            *ngIf="addEmployeeForm.controls['email']?.invalid && addEmployeeForm.controls['email']?.touched">
+                                            <span *ngIf="addEmployeeForm.controls['email']?.errors?.['email']">
+                                                L'email n'est pas valide.
+                                            </span>
+                                        </small>
+                                    </div>
+
+                                    <!-- Sexe -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="Sexe">Sexe</label>
+                                            <p-select [options]="sexes" [(ngModel)]="selectedSexe" optionLabel="name"
+                                                placeholder="Sélectionner un sexe" formControlName="sexe"
+                                                class="w-full md:w-56" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <!-- Date de Naissance -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="dN">Date de Naissance</label>
+                                            <input pInputText type="date" id="dN" formControlName="dN"
+                                                class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <!-- Date de Recrutement -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="dR">Date de Recrutement</label>
+                                            <input pInputText type="date" id="dR" formControlName="dR"
+                                                class="form-control" required />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Poste Actuelle Section -->
+                            <div *ngIf="!employe.ajout">
+                                <div class="form-section mb-4">
+                                    <h4 class="text-secondary">Poste Actuel</h4>
+                                    <div class="form-group">
+                                        <label for="Poste">Poste</label>
+                                        <p-select [options]="postes" optionLabel="titre"
+                                            placeholder="Sélectionner un poste" formControlName="Poste" class="w-full"
+                                            (onChange)="onPosteChange($event)" />
+                                        <small class="text-danger"
+                                            *ngIf="addEmployeeForm.controls['Poste']?.invalid && addEmployeeForm.controls['Poste']?.touched">
+                                            Ce champ est obligatoire.
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="form-section mb-4" *ngIf="directions.length > 0">
+                                    <h4 class="text-secondary">Direction de Travail</h4>
+                                    <div class="form-group">
+                                        <p-select [options]="directions" optionLabel="nom_direction"
+                                            placeholder="Sélectionner une direction" formControlName="Direction"
+                                            (onChange)="onDirectionChange($event)" class="w-full" />
+                                        <small class="text-danger"
+                                            *ngIf="addEmployeeForm.controls['Direction']?.invalid && addEmployeeForm.controls['Direction']?.touched">
+                                            Ce champ est obligatoire.
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <!-- Site de Travail Section -->
+                                <div class="form-section mb-4" *ngIf="sites.length > 0">
+                                    <h4 class="text-secondary">Site de Travail</h4>
+                                    <div class="form-group">
+                                        <p-select [options]="sites" optionLabel="nom_site"
+                                            placeholder="Sélectionner un site" formControlName="site" class="w-full" />
+                                        <small class="text-danger"
+                                            *ngIf="addEmployeeForm.controls['site']?.invalid && addEmployeeForm.controls['site']?.touched">
+                                            Ce champ est obligatoire.
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <!-- Période du Poste Section -->
+                                <div class="form-section mb-4">
+                                    <h4 class="text-secondary">Période du Poste</h4>
+                                    <div class="row">
+                                        <!-- Date de Début -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="dateDebut">Date de Début</label>
+                                                <input pInputText type="date" id="dateDebut" formControlName="dateDebut"
+                                                    class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <!-- Date de Fin -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="dateFin">Date de Fin</label>
+                                                <input pInputText type="date" id="dateFin" formControlName="dateFin"
+                                                    class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Lieu de Travail Section -->
+
+                            <!-- État de l'Employé Section -->
+                            <div class="form-section mb-4">
+                                <h4 class="text-secondary">État de l'Employé</h4>
+                                <div class="form-group">
+                                    <p-selectbutton [options]="stateOptions" formControlName="actif" optionLabel="label"
+                                        optionValue="value" />
+                                    <small class="text-danger"
+                                        *ngIf="addEmployeeForm.controls['actif']?.invalid && addEmployeeForm.controls['actif']?.touched">
+                                        Ce champ est obligatoire.
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- Documents Section -->
+                            <div class="form-section mb-4">
+                                <h4 class="text-secondary">Documents</h4>
+                                <div class="form-group">
+                                    <label for="fileUpload">Télécharger une Photo ou un Document</label>
+
+                                    <p-fileupload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php"
+                                        #fileUpload [multiple]="false" accept="image/*" maxFileSize="1000000"
+                                        mode="advanced" (onSelect)="onSelectedFiles($event)" formControlName="photo">
+                                    </p-fileupload>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Footer -->
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-success w-100" [disabled]="addEmployeeForm.invalid">
+                                Ajouter l'Employé
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+
+            </li>
+
+            <!-- Stage -->
+            <li class="tab-content tab-content-2" *ngIf="selectedEmployeId !== null">
+                <app-stage [employeId]="selectedEmployeId"></app-stage>
+            </li>
+
+            <!-- Discipline -->
+            <li class="tab-content tab-content-3" *ngIf="selectedEmployeId !== null">
+                <app-discipline [employeId]="selectedEmployeId"></app-discipline>
+            </li>
+
+            <!-- Expérience -->
+            <li class="tab-content tab-content-4" *ngIf="selectedEmployeId !== null">
+                <app-experience [employeId]="selectedEmployeId"
+                    (experienceAdded)="onExperienceAdded()"></app-experience>
+            </li>
+            <li class="tab-content tab-content-6" *ngIf="selectedEmployeId !== null">
+                <app-list-diplome [employeId]="selectedEmployeId"></app-list-diplome>
+            </li>
+            <!-- Poste -->
+            <li class="tab-content tab-content-last" *ngIf="selectedEmployeId !== null">
+                <app-poste [employeId]="selectedEmployeId"></app-poste>
+            </li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

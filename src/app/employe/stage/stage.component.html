@@ -1,0 +1,128 @@
+<div class="card">
+  <h2>Gestion des Stages</h2>
+
+  <div class="card-content">
+    <!-- Bouton pour ajouter un nouveau stage -->
+    <p-button (click)="showAddStageDialog()" label="Ajouter un stage" class="add-button"></p-button>
+
+    <!-- Divider -->
+    <div class="divider"></div>
+
+    <!-- Liste des stages -->
+    <div class="list-container">
+      <h3>Liste des Stages</h3>
+    
+      <div *ngIf="stages.length === 0; else stageList" class="empty-message">
+        <div class="empty-icon">💼</div>
+
+    
+        <div class="empty-text">
+          <p><strong>Pas de stages enregistrés !</strong> Aucun stage n'a été ajouté jusqu'à présent.</p>
+        </div>
+      </div>
+    
+      <ng-template #stageList>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Société</th>
+              <th>Date de Début</th>
+              <th>Date de Fin</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let stage of stages">
+              <td>{{ stage.societe }}</td>
+              <td>{{ stage.dateDebut | date:'shortDate' }}</td>
+              <td>{{ stage.dateFin | date:'shortDate' }}</td>
+              <td>
+                <p-button icon="pi pi-pencil" severity="warn" [rounded]="true" [text]="true"
+                    (click)="showEditStageDialog(stage)" class="action-button">
+                </p-button>
+                <p-button icon="pi pi-times" severity="danger" [rounded]="true" [text]="true"
+                    (click)="deleteStage(stage.id!)" class="action-button">
+                </p-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-template>
+    </div>
+
+    <!-- Boîte de dialogue pour ajouter un stage -->
+    <p-dialog header="Ajouter un Stage" 
+              [(visible)]="addStageVisible" 
+              [modal]="true" 
+              [style]="{ width: '25rem' }" 
+              [draggable]="false" 
+              [resizable]="false"
+              [closable]="true" 
+              [dismissableMask]="true">
+      <form [formGroup]="stageForm" (ngSubmit)="addStage()">
+        <div class="form-group">
+          <label for="societe">Société du Stage :</label>
+          <input id="societe" type="text" formControlName="societe" class="form-control" />
+          <small class="text-danger" *ngIf="stageForm.controls['societe'].invalid && stageForm.controls['societe'].touched">
+            *Ce champ est obligatoire.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="dateDebut">Date de Début :</label>
+          <input id="dateDebut" type="date" formControlName="dateDebut" class="form-control" />
+          <small class="text-danger" *ngIf="stageForm.controls['dateDebut'].invalid && stageForm.controls['dateDebut'].touched">
+            *Ce champ est obligatoire.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="dateFin">Date de Fin :</label>
+          <input id="dateFin" type="date" formControlName="dateFin" class="form-control" />
+          <small class="text-danger" *ngIf="stageForm.controls['dateFin'].invalid && stageForm.controls['dateFin'].touched">
+            *Ce champ est obligatoire.
+          </small>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" (click)="addStageVisible = false" class="btn btn-secondary">Annuler</button>
+          <button type="submit" class="btn btn-primary" [disabled]="stageForm.invalid">Ajouter</button>
+        </div>
+      </form>
+    </p-dialog>
+
+    <!-- Boîte de dialogue pour modifier un stage -->
+    <p-dialog header="Modifier le Stage" [(visible)]="editStageVisible" [modal]="true" [style]="{ width: '25rem' }" [position]="'center'">
+      <form [formGroup]="editStageForm">
+        <div class="form-group">
+          <label for="editSociete">Société du Stage :</label>
+          <input id="editSociete" type="text" formControlName="societe" class="form-control" />
+          <small class="text-danger" *ngIf="editStageForm.controls['societe'].invalid && editStageForm.controls['societe'].touched">
+            *Ce champ est obligatoire.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="editDateDebut">Date de Début :</label>
+          <input id="editDateDebut" type="date" formControlName="dateDebut" class="form-control" />
+          <small class="text-danger" *ngIf="editStageForm.controls['dateDebut'].invalid && editStageForm.controls['dateDebut'].touched">
+            *Ce champ est obligatoire.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="editDateFin">Date de Fin :</label>
+          <input id="editDateFin" type="date" formControlName="dateFin" class="form-control" />
+          <small class="text-danger" *ngIf="editStageForm.controls['dateFin'].invalid && editStageForm.controls['dateFin'].touched">
+            *Ce champ est obligatoire.
+          </small>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" (click)="editStageVisible = false" class="btn btn-secondary">Annuler</button>
+          <button type="button" (click)="updateStage()" class="btn btn-primary" [disabled]="editStageForm.invalid">Enregistrer</button>
+        </div>
+      </form>
+    </p-dialog>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+.unread {
+    font-weight: bold;  /* Met en gras les notifications non lues */
+    background-color: #f8f9fa;  /* Ajoute un léger fond */
+  }
+  
+  .notification-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .notification-item .mark-read-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .notification-item .mark-read-btn:hover {
+    background: #218838;
+  }
+  

@@ -1,0 +1,64 @@
+/* Styles généraux pour la table des postes */
+.p-table .poste-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.p-table .poste-detail {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.p-table .status-badge {
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.p-table .status-badge i {
+  margin-right: 5px;
+}
+
+/* Styling des actions dans le tableau */
+.p-button {
+  margin-right: 0.5rem;
+}
+
+/* Gestion des badges d'état */
+.p-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.p-badge.pi-check-circle {
+  background-color: #4caf50;
+  color: white;
+}
+
+.p-badge.pi-spinner {
+  background-color: #ff9800;
+  color: white;
+}
+
+/* Responsivité de la table */
+@media (max-width: 768px) {
+  .p-table {
+    font-size: 0.9rem;
+  }
+
+  .p-table .poste-title {
+    font-size: 1rem;
+  }
+
+  .p-table .poste-detail {
+    font-size: 0.8rem;
+  }
+}
+
+/* Style pour message d'absence de données */
+.text-center p {
+  color: #888;
+  font-style: italic;
+}
