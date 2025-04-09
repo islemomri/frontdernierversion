@@ -3,6 +3,7 @@ import { SousTypeFormation } from "./SousTypeFormation.model";
 import { TypeFormation } from "./type-formation.model";
 
 export interface FormationDto {
+   id?:number
     titre: string;
     description: string;
     typeFormation: TypeFormation;
@@ -12,6 +13,11 @@ export interface FormationDto {
     responsableEvaluationId?: number; // Optionnel
     responsableEvaluationExterne?: string; // Optionnel
     employeIds: number[];
-    responsableEvaluation?: string;
-    employes?: Employe[]; 
-  }
+    responsableEvaluation?: any;
+    employes?: Employe[];
+    fichierPdf?: File; // Ajout du champ fichierPdf (correspond à MultipartFile en Java)
+    organisateurId?: number; // Ajout du champ organisateurId (optionnel)
+    titrePoste?: string; // Ajout du champ titrePoste (optionnel)
+    valide?:boolean;
+    dateRappel?: string;
+}

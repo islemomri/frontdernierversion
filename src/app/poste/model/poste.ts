@@ -1,8 +1,9 @@
 export class Poste {
     id?: number;
     titre!: string;
-    niveauExperience!: string;
-    diplomeRequis!: string;
-    competencesRequises!: string;
+    niveau_experience!: string;
+    diplome_requis!: string;
+    competences_requises!: string;
+    document?: File;
   }
   

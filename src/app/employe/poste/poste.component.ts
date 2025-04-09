@@ -103,7 +103,7 @@ export class PosteComponent {
 
   openupdate(poste: any) {
     if (this.employeId) {
-      this.employeservice.getPosteDetails(this.employeId, poste.posteId).subscribe(
+      this.employeservice.getPosteDetails(this.employeId, poste.poste_id).subscribe(
         (data) => {
           console.log(data);
           this.selectedPosteDetails = {
@@ -276,35 +276,28 @@ export class PosteComponent {
   }
   
   
-
-  getPosteStatus(poste: PosteAvecDatesDTO): string {
+  getPosteStatus(poste: any): string {
     const today = new Date();
-    const dateFin = poste.dateFin ? new Date(poste.dateFin) : null;
-  
-    // Si dateFin est null, le poste est en cours
-    if (dateFin === null) {
+    
+    // Vérifie d'abord si date_fin est null ou undefined
+    if (poste.date_fin === null || poste.date_fin === undefined) {
       return 'En cours';
     }
   
-    // Si dateFin est avant aujourd'hui, c'est un poste historique
-    if (dateFin < today) {
-      return 'Historique';
-    }
+    // Convertit en Date si ce n'est pas déjà le cas
+    const dateFin = poste.date_fin instanceof Date ? poste.date_fin : new Date(poste.date_fin);
   
-    // Si dateFin est après aujourd'hui, le poste est en cours
-    return 'En cours';
+    // Compare avec la date actuelle
+    return dateFin < today ? 'Historique' : 'En cours';
   }
   
-
-  getBadgeSeverity(poste: PosteAvecDatesDTO): 'info' | 'success' | 'warn' | 'danger' {
+  getBadgeSeverity(poste: any): 'info' | 'success' | 'warn' | 'danger' {
     const status = this.getPosteStatus(poste);
     switch (status) {
       case 'En cours':
         return 'info';
-      case 'Terminé':
+      case 'Historique':
         return 'success';
-      case 'À venir':
-        return 'warn';
       default:
         return 'danger';
     }

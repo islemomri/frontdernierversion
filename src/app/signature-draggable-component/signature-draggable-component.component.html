@@ -1,0 +1,9 @@
+<div
+  *ngIf="signatureDataUrl"
+  class="draggable"
+  [style.left.px]="position.x"
+  [style.top.px]="position.y"
+  (mousedown)="onMouseDown($event)"
+  style="position: absolute;">
+  <img [src]="signatureDataUrl" alt="Signature" class="signature-image" />
+</div>

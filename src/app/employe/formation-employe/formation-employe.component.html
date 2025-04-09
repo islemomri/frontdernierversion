@@ -1,0 +1,273 @@
+<div class="formation-dashboard modern-ui">
+  <!-- Header redesign -->
+  <div class="dashboard-header glassmorphism">
+    <div class="header-content">
+      <div class="title-section">
+        <h1 class="gradient-title">
+          <i class="pi pi-bookmark"></i>
+          Parcours de Formation
+        </h1>
+        <p class="subtitle">Historique complet des compétences acquises</p>
+      </div>
+      
+      <div class="header-actions">
+        <button pButton 
+                icon="pi pi-sync" 
+                class="p-button-rounded p-button-outlined refresh-btn"
+                [class.rotate]="loading"
+                (click)="refreshFormations()"
+                pTooltip="Actualiser" 
+                tooltipPosition="bottom"></button>
+      </div>
+    </div>
+    
+    <!-- Statistiques en grille responsive -->
+    <div class="stats-grid">
+      <div *ngFor="let stat of stats" class="stat-card" [ngClass]="'stat-' + stat.type">
+        <div class="stat-content">
+          <div class="stat-icon">
+            <i [class]="stat.icon"></i>
+          </div>
+          <div class="stat-text">
+            <div class="stat-value">{{ stat.value }}</div>
+            <div class="stat-label">{{ stat.label }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenu principal -->
+  <div class="dashboard-content">
+    <!-- États améliorés -->
+    <div *ngIf="loading" class="loading-state animated-fade">
+      <div class="loading-content">
+        <div class="loading-animation">
+          <div class="loading-dot"></div>
+          <div class="loading-dot"></div>
+          <div class="loading-dot"></div>
+        </div>
+        <h3>Chargement en cours</h3>
+        <p>Optimisation de vos données de formation...</p>
+      </div>
+    </div>
+
+    <div *ngIf="error" class="error-state animated-fade">
+      <div class="error-content">
+        <div class="error-icon">
+          <i class="pi pi-exclamation-triangle"></i>
+        </div>
+        <div class="error-details">
+          <h3>Requête interrompue</h3>
+          <p>{{ error }}</p>
+          <button pButton 
+                  label="Réessayer" 
+                  icon="pi pi-refresh"
+                  class="p-button-rounded p-button-outlined"
+                  (click)="loadFormations()"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Liste vide plus engageante -->
+    <div *ngIf="!loading && !error && formations.length === 0" class="empty-state animated-fade">
+      <div class="empty-illustration">
+        <img src="assets/images/no-data.svg" alt="Aucune donnée">
+      </div>
+      <div class="empty-content">
+        <h3>Portfolio de compétences vide</h3>
+        <p>Commencez votre parcours de développement professionnel dès maintenant.</p>
+       
+      </div>
+    </div>
+
+    <!-- Contenu des formations -->
+    <div *ngIf="!loading && !error && formations.length > 0" class="formations-container">
+      <!-- Barre de recherche améliorée -->
+      <div class="search-toolbar">
+        <span class="p-input-icon-left search-container">
+          <i class="pi pi-search"></i>
+          <input pInputText 
+                type="text" 
+                [(ngModel)]="searchTerm"
+                placeholder="Rechercher par mot-clé, compétence ou formateur..."
+                class="modern-search" />
+        </span>
+      </div>
+
+      <!-- Timeline verticale moderne -->
+      <div class="vertical-timeline">
+        <div *ngFor="let item of filteredFormations; let i = index" class="timeline-item">
+          <div class="timeline-connector"></div>
+          <div class="timeline-badge">
+            <i [class]="getStatusIcon(item)" [ngStyle]="getStatusIconColor(item)"></i>
+          </div>
+          
+          <!-- Carte de formation redesign -->
+          <div class="formation-card" [ngClass]="getStatusClass(item)">
+            <div class="card-header">
+              <div class="formation-title">
+                <h3>{{ item.formation.titre }}</h3>
+                <div class="formation-meta">
+                  <span class="formation-period">
+                    <i class="pi pi-calendar"></i>
+                    {{ item.formation.dateDebutPrevue | date:'dd MMM yyyy' }} - 
+                    {{ item.formation.dateFinPrevue | date:'dd MMM yyyy' }}
+                  </span>
+                  <p-tag [value]="getStatusText(item)" 
+                        [severity]="getStatusSeverity(item)"
+                        styleClass="status-tag"></p-tag>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div class="formation-details-grid">
+                <div class="detail-item">
+                  <i class="pi pi-tag"></i>
+                  <span>{{ item.formation.typeFormation || 'Type non spécifié' }}</span>
+                </div>
+                <div class="detail-item">
+                  <i class="pi pi-user"></i>
+                  <span>
+                    {{ item.formation.responsableEvaluation?.prenom }} 
+                    {{ item.formation.responsableEvaluation?.nom || 'Formateur non spécifié' }}
+                  </span>
+                </div>
+                <div class="detail-item">
+                  <i class="pi pi-briefcase"></i>
+                  <span>{{ item.formation.titrePoste || 'Poste non spécifié' }}</span>
+                </div>
+                <div class="detail-item">
+                  <i class="pi pi-comment"></i>
+                  <span>{{ item.resultat || 'Aucun feedback' }}</span>
+                </div>
+              </div>
+
+            
+            </div>
+
+            <div class="card-footer">
+              <div class="employee-info">
+                <p-avatar [label]="getAvatarLabel(item)" 
+                          size="normal"
+                          shape="circle"
+                          styleClass="employee-avatar"></p-avatar>
+                <div class="employee-details">
+                  <span class="employee-name">{{ item.employe.prenom }} {{ item.employe.nom }}</span>
+                  <span class="employee-id">#{{ item.employe.matricule }}</span>
+                </div>
+              </div>
+              
+              <div class="card-actions">
+                <button pButton 
+                        icon="pi pi-eye" 
+                        class="p-button-rounded p-button-outlined action-btn"
+                        (click)="showDetails(item)"
+                        pTooltip="Détails"
+                        tooltipPosition="top"></button>
+                
+                <button *ngIf="canEvaluate(item)"
+                        pButton 
+                        icon="pi pi-check" 
+                        class="p-button-rounded p-button-outlined action-btn"
+                        (click)="openEvaluationDialog(item)"
+                        pTooltip="Évaluer"
+                        tooltipPosition="top"></button>
+                
+                <button *ngIf="item.document"
+                        pButton 
+                        icon="pi pi-download" 
+                        class="p-button-rounded p-button-outlined action-btn"
+                        (click)="openDocument(item.document)"
+                        pTooltip="Attestation"
+                        tooltipPosition="top"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Dialogue de détails amélioré -->
+<p-dialog [header]="selectedFormation?.formation?.titre || 'Détails de la formation'" 
+          [(visible)]="displayDetailsDialog" 
+          [style]="{ width: '50vw', maxWidth: '800px' }"
+          [modal]="true"
+          styleClass="modern-dialog">
+  
+  <div *ngIf="selectedFormation" class="formation-details-dialog">
+    <div class="detail-grid">
+      <div class="detail-section">
+        <h4><i class="pi pi-info-circle"></i> Informations générales</h4>
+        <div class="detail-row">
+          <span class="detail-label">Type:</span>
+          <span>{{ selectedFormation.formation.typeFormation || 'Non spécifié' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Période:</span>
+          <span>
+            {{ selectedFormation.formation.dateDebutPrevue | date:'dd MMM yyyy' }} - 
+            {{ selectedFormation.formation.dateFinPrevue | date:'dd MMM yyyy' }}
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Statut:</span>
+          <p-tag [value]="getStatusText(selectedFormation)" 
+                [severity]="getStatusSeverity(selectedFormation)"></p-tag>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h4><i class="pi pi-file"></i> Description</h4>
+        <p class="description-text">{{ selectedFormation.formation.description || 'Aucune description disponible' }}</p>
+      </div>
+
+      <div class="detail-section">
+        <h4><i class="pi pi-user"></i> Responsable</h4>
+        <div class="responsible-info">
+          <p-avatar [label]="selectedFormation.formation.responsableEvaluation?.prenom?.charAt(0) + selectedFormation.formation.responsableEvaluation?.nom?.charAt(0)" 
+                   size="large"
+                   shape="circle"
+                   *ngIf="selectedFormation.formation.responsableEvaluation"
+                   styleClass="responsible-avatar"></p-avatar>
+          <div class="responsible-details">
+            <span class="responsible-name">
+              {{ selectedFormation.formation.responsableEvaluation?.prenom }} 
+              {{ selectedFormation.formation.responsableEvaluation?.nom || 'Non spécifié' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h4><i class="pi pi-chart-bar"></i> Résultats</h4>
+        <div class="detail-row">
+          <span class="detail-label">Évaluation:</span>
+          <span>{{ selectedFormation.resultat || 'Non évalué' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Commentaire:</span>
+          <span>{{ selectedFormation.formation.commentaire || 'Aucun commentaire' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="selectedFormation.document" class="document-section">
+      <button pButton 
+              label="Télécharger l'attestation" 
+              icon="pi pi-download"
+              (click)="openDocument(selectedFormation.document!)"
+              class="p-button-outlined"></button>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button pButton 
+            label="Fermer" 
+            (click)="displayDetailsDialog = false"
+            class="p-button-text"></button>
+  </ng-template>
+</p-dialog>

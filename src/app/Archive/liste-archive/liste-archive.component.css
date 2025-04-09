@@ -34,15 +34,7 @@ h1 {
   max-width: 1200px;
 }
 
-.card {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  padding: 2rem;
-  text-align: center;
-  transition: transform 0.3s ease;
-}
+
 
 .card:hover {
   transform: translateY(-10px);
@@ -69,7 +61,7 @@ h1 {
 .card {
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
     overflow: hidden;
     padding: 2rem;
     text-align: center;
@@ -81,7 +73,7 @@ h1 {
   
   .card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  
   }
   
   .card .icon {

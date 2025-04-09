@@ -52,15 +52,15 @@
             
           </td>
           <td><span class="poste-detail">
-            <i class="pi pi-building" style="margin-right: 5px;"></i>{{ poste.nomDirection }}
+            <i class="pi pi-building" style="margin-right: 5px;"></i>{{ poste.nom_direction }}
           </span>
         </td>
         <td> <span class="poste-detail">
-          <i class="pi pi-map-marker" style="margin-right: 5px;"></i>{{ poste.nomSite }}
+          <i class="pi pi-map-marker" style="margin-right: 5px;"></i>{{ poste.nom_site }}
         </span></td>
           
-        <td>{{ poste.dateDebut | date }}</td>
-        <td>{{ poste.dateFin | date }}</td>
+        <td>{{ poste.date_debut | date }}</td>
+        <td>{{ poste.date_fin| date }}</td>
         <td>
           <p-badge [value]="getPosteStatus(poste)" [severity]="getBadgeSeverity(poste)" class="status-badge">
             <i *ngIf="getPosteStatus(poste) === 'En cours'" class="pi pi-spinner pi-spin"></i>

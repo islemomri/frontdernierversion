@@ -33,12 +33,14 @@ import { PosteService } from '../../poste/service/poste.service';
 import { DirectionService } from '../../direction/service/direction.service';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { PosteComponent } from '../poste/poste.component';
+
 import { ListDiplomeComponent } from '../../diplome/list-diplome/list-diplome.component';
 
 
 import { CalendarModule } from 'primeng/calendar';
 
 import { MessageModule } from 'primeng/message';
+import { FormationEmployeComponent } from '../formation-employe/formation-employe.component';
 
 
 
@@ -73,6 +75,7 @@ import { MessageModule } from 'primeng/message';
     ListDiplomeComponent,
     CardModule,
     MessageModule,
+    FormationEmployeComponent,
     CalendarModule,
 
   ],
@@ -279,11 +282,15 @@ this.selectedSexe = this.sexes.find(sexe => sexe.name === this.employe.sexe) || 
     // Récupérer les dates de début et de fin
     const dateDebut = this.addEmployeeForm.controls['dateDebut'].value;
     const dateFin = this.addEmployeeForm.controls['dateFin'].value;
-   
+    console.log('Poste:', posteId);
+    console.log('Direction:', direction.id);
+    console.log('Site:', site.id);
+    console.log('Date de début:', dateDebut);
+    console.log('Date de fin:', dateFin);
     console.log('Employé ajouté avec succès:', emp);
     const employeId = this.selectedEmployeId !== null ? this.selectedEmployeId : 0;
     // Appel du service pour ajouter l'employé avec les données supplémentaires
-    this.EmoloyeService.modifierEmploye(employeId,posteId, direction.id, site.id, emp, dateDebut, dateFin).subscribe(
+   this.EmoloyeService.modifierEmploye(employeId,posteId, direction.id, site.id, emp, dateDebut, dateFin).subscribe(
       (response) => {
         console.log('Employé ajouté avec succès:', response);
         this.showSuccessAlert = true;

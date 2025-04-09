@@ -62,21 +62,6 @@ export class ArchiveListPosteComponent implements OnInit {
       this.visibleUpdateDialog = true;
     }
   
-    updatePoste(): void {
-      if (!this.selectedPoste.id) {
-        console.error("L'ID du poste est manquant !");
-        return;
-      }
-      
-      this.posteService.updatePoste(this.selectedPoste.id, this.selectedPoste).subscribe(() => {
-        const index = this.postes.findIndex(p => p.id === this.selectedPoste.id);
-        if (index !== -1) {
-          this.postes[index] = { ...this.selectedPoste };
-        }
-        this.visibleUpdateDialog = false;
-      }, (error: any) => {
-        console.error('Erreur lors de la mise à jour du poste', error);
-      });
-    }
+
 
 }

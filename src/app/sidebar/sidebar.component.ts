@@ -37,6 +37,11 @@ export class SidebarComponent  implements OnInit{
     return this.userRole === 'ADMIN';
   }
 
+  isResponsable(): boolean {
+    
+    return this.userRole === 'RESPONSABLE';
+  }
+
   isDirecteur(): boolean {
     return this.userRole === 'DIRECTEUR';
   }

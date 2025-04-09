@@ -26,6 +26,8 @@ import { RecrutementComponent } from './compatibilte/recrutement/recrutement.com
 import { ListNotificationsComponent } from './notification/list-notifications/list-notifications.component';
 import { guardGuard } from './auth/guard/guard.guard';
 import { FormationComponent } from './formation/formation.component';
+import { FormationResponsableComponent } from './formation/formation-responsable/formation-responsable.component';
+import { CalendrierComponent } from './calendrier/calendrier.component';
 
 
 export const routes: Routes = [
@@ -57,5 +59,7 @@ export const routes: Routes = [
   { path: 'chart', component: RecrutementComponent },
   { path: 'notifications', component:ListNotificationsComponent},
   { path: 'Formation', component:FormationComponent},
+  { path: 'Formation_Responsable', component:FormationResponsableComponent},
+  { path: 'calendrier', component:CalendrierComponent},
 
 ];

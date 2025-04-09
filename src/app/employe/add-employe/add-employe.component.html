@@ -13,32 +13,46 @@
 
     <div class="pcss3t pcss3t-effect-scale pcss3t-theme-1">
         <input type="radio" name="pcss3t" checked id="tab1" class="tab-content-first">
-        <label for="tab1" style="color: #c22870;  font-size: 18px;font-weight: bold;"><i class="icon-user"
-                style="color: #c22870;"></i> Modifier Employé</label>
+        <label for="tab1" style="color: #c22870; font-size: 18px; font-weight: bold;">
+            <i class="icon-user" style="color: #c22870;"></i> Modifier Employé
+        </label>
 
+        <!-- Onglet Stage -->
         <input type="radio" name="pcss3t" id="tab2" class="tab-content-2">
-        <label for="tab2" style="color: #7044e9;font-size: 18px; font-weight: bold;"><i class="icon-book"
-                style="color: #7044e9;"></i> Stage</label>
+        <label for="tab2" style="color: #7044e9; font-size: 18px; font-weight: bold;">
+            <i class="icon-book" style="color: #7044e9;"></i> Stage
+        </label>
 
+        <!-- Onglet Discipline -->
         <input type="radio" name="pcss3t" id="tab3" class="tab-content-3">
-        <label for="tab3" style="color: #d88921;font-size: 18px;font-weight: bold;"><i class="icon-warning-sign"
-                style="color: #d88921;"></i> Discipline</label>
+        <label for="tab3" style="color: #d88921; font-size: 18px; font-weight: bold;">
+            <i class="icon-warning-sign" style="color: #d88921;"></i> Discipline
+        </label>
 
+        <!-- Onglet Expérience -->
         <input type="radio" name="pcss3t" id="tab4" class="tab-content-4">
-        <label for="tab4" style="color: #2daa84;font-size: 18px;font-weight: bold;"><i class="icon-briefcase"
-                style="color: #2daa84;"></i> Expérience</label>
+        <label for="tab4" style="color: #2daa84; font-size: 18px; font-weight: bold;">
+            <i class="icon-briefcase" style="color: #2daa84;"></i> Expérience
+        </label>
 
+        <!-- Onglet Diplômes -->
+        <input type="radio" name="pcss3t" id="tab5" class="tab-content-5">
+        <label for="tab5" style="color: #2012e7; font-size: 18px; font-weight: bold;">
+            <i class="icon-sitemap" style="color: #2012e7;"></i> Diplomes
+        </label>
+
+        <!-- Onglet Poste -->
         <input type="radio" name="pcss3t" id="tab6" class="tab-content-6">
-        <label for="tab6" style="color: #2012e7;font-size: 18px;font-weight: bold;"><i class="icon-sitemap"
-                style="color: #2012e7;"></i> Diplomes</label>
+        <label for="tab6" style="color: #e71212; font-size: 18px; font-weight: bold;">
+            <i class="icon-sitemap" style="color: #e71212;"></i> Poste
+        </label>
 
-
-
-        <input type="radio" name="pcss3t" id="tab5" class="tab-content-last">
-        <label for="tab5" style="color: #e71212;font-size: 18px;font-weight: bold;"><i class="icon-sitemap"
-                style="color: #e71212;"></i> Poste</label>
-
-
+        <!-- Onglet Formation -->
+        <input type="radio" name="pcss3t" id="tab7" class="tab-content-last">
+        <label for="tab7" style="color: #7512e7; font-size: 18px; font-weight: bold;">
+            <i class="icon-certificate" style="color: #7512e7;"></i> Formation
+        </label>
+        
         <ul>
             <!-- Formulaire d'ajout d'employé -->
             <li class="tab-content tab-content-first">
@@ -246,22 +260,29 @@
                 <app-stage [employeId]="selectedEmployeId"></app-stage>
             </li>
 
-            <!-- Discipline -->
+            <!-- Contenu Discipline -->
             <li class="tab-content tab-content-3" *ngIf="selectedEmployeId !== null">
                 <app-discipline [employeId]="selectedEmployeId"></app-discipline>
             </li>
 
-            <!-- Expérience -->
+            <!-- Contenu Expérience -->
             <li class="tab-content tab-content-4" *ngIf="selectedEmployeId !== null">
-                <app-experience [employeId]="selectedEmployeId"
-                    (experienceAdded)="onExperienceAdded()"></app-experience>
+                <app-experience [employeId]="selectedEmployeId" (experienceAdded)="onExperienceAdded()"></app-experience>
             </li>
-            <li class="tab-content tab-content-6" *ngIf="selectedEmployeId !== null">
+
+            <!-- Contenu Diplômes -->
+            <li class="tab-content tab-content-5" *ngIf="selectedEmployeId !== null">
                 <app-list-diplome [employeId]="selectedEmployeId"></app-list-diplome>
             </li>
-            <!-- Poste -->
-            <li class="tab-content tab-content-last" *ngIf="selectedEmployeId !== null">
+
+            <!-- Contenu Poste -->
+            <li class="tab-content tab-content-6" *ngIf="selectedEmployeId !== null">
                 <app-poste [employeId]="selectedEmployeId"></app-poste>
+            </li>
+
+            <!-- Contenu Formation -->
+            <li class="tab-content tab-content-last" *ngIf="selectedEmployeId !== null">
+                <app-formation-employe [employeId]="selectedEmployeId"></app-formation-employe>
             </li>
         </ul>
     </div>

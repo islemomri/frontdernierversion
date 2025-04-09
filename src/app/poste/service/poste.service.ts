@@ -12,10 +12,12 @@ export class PosteService {
   private apiUrl = `http://localhost:9090/recrutement/postes`; // Remplace `apiUrl` par l'URL de ton backend
 
   constructor(private http: HttpClient) {}
+  ajouterPoste(formData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/ajouter`, formData);
+}
 
-  ajouterPoste(posteDTO: PosteDTO): Observable<any> {
-    return this.http.post(`${this.apiUrl}/ajouter`, posteDTO);  // Passe l'objet posteDTO en tant que body
-  }
+
+  
   // Récupérer tous les postes
   getAllPostes(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);
@@ -27,8 +29,8 @@ export class PosteService {
   }
 
   // Mettre à jour un poste
-  updatePoste(id: number, updatedPoste: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, updatedPoste);
+  updatePoste(id: number, formData: FormData): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, formData);
   }
 
   // Supprimer un poste

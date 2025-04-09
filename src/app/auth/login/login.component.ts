@@ -80,13 +80,16 @@ export class LoginComponent implements OnInit {
 
           if (this.authService.getUserRole() === 'RH') {
             this.router.navigate(['/sidebar']);
-            localStorage.setItem('RHID', response.utilisateurId); // Stocker l'ID seulement si c'est un RH
-            console.log('RH ID stocké:', response.utilisateurId);
+            localStorage.setItem('RHID', response.utilisateur_id); // Stocker l'ID seulement si c'est un RH
+            console.log('RH ID stocké:', response.utilisateur_id);
 
             
           } else if (this.authService.getUserRole() === 'DIRECTEUR') {
             this.router.navigate(['/sidebar']);
-          } else {
+          } else if (this.authService.getUserRole() === 'RESPONSABLE') {
+            this.router.navigate(['/Formation_Responsable']);
+            localStorage.setItem('RESPONSABLEID', response.utilisateur_id);
+          }else{
             this.router.navigate(['/sidebar']);
           }
           this.messageService.add({ severity: 'success', summary: 'Succès',detail: 'Authentification réussie' });

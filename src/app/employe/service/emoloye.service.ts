@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Employe } from '../model/employe';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { EmployeExistant } from '../model/EmployeExistant';
 import { Site } from '../../site/model/site';
 import { Discipline } from '../model/Discipline';
@@ -121,24 +121,35 @@ export class EmoloyeService {
   } 
   modifierEmploye(
     id: number,
-
-    posteId: number,
-    directionId: number,
-    siteId: number,
+    posteId: number | null,
+    directionId: number | null,
+    siteId: number | null,
     employe: Employe,
-   
-    dateDebut: string,
-    dateFin: string
+    dateDebut: string | null,
+    dateFin: string | null
   ): Observable<Employe> {
+    // Créer un objet HttpParams pour les paramètres de requête
     let params = new HttpParams();
-    
-    if (posteId !== undefined) params = params.set('posteId', posteId.toString());
-    if (directionId !== undefined) params = params.set('directionId', directionId.toString());
-    if (siteId !== undefined) params = params.set('siteId', siteId.toString());
-    if (dateDebut !== undefined) params = params.set('dateDebut', dateDebut);
-    if (dateFin !== undefined) params = params.set('dateFin', dateFin);
   
-    return this.http.put<Employe>(`${this.apiUrl}/${id}`, employe);
+    // Ajouter les paramètres uniquement s'ils ne sont pas null ou undefined
+    if (posteId !== null && posteId !== undefined) {
+      params = params.set('posteId', posteId.toString());
+    }
+    if (directionId !== null && directionId !== undefined) {
+      params = params.set('directionId', directionId.toString());
+    }
+    if (siteId !== null && siteId !== undefined) {
+      params = params.set('siteId', siteId.toString());
+    }
+    if (dateDebut !== null && dateDebut !== undefined) {
+      params = params.set('dateDebut', dateDebut);
+    }
+    if (dateFin !== null && dateFin !== undefined) {
+      params = params.set('dateFin', dateFin);
+    }
+  
+    // Appel HTTP PUT avec les paramètres
+    return this.http.put<Employe>(`${this.apiUrl}/${id}`, employe, { params });
   }
   modifierPosteAEmploye(
     employeId: number,
@@ -165,5 +176,13 @@ export class EmoloyeService {
     return this.http.put<PosteAvecDatesDTO>(url, null, { params });
   }
   
-  
+  getDocumentByEmployeIdAndFormationId(employeId: number, formationId: number): Observable<Blob> {
+    const url = `${this.apiUrl}/document?employeId=${employeId}&formationId=${formationId}`;
+    return this.http.get(url, { responseType: 'blob' }).pipe(
+      catchError(error => {
+        console.error('Erreur lors de la récupération du document', error);
+        return throwError(error); // Re-throw the error for further handling
+      })
+    );
+}
 }

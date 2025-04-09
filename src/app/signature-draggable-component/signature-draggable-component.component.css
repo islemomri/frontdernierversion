@@ -1,0 +1,9 @@
+.draggable {
+    cursor: move; /* Change le curseur en "move" pour indiquer que l'élément est déplaçable */
+    user-select: none; /* Empêche la sélection du texte pendant le déplacement */
+  }
+  
+  img {
+    width: 100px; /* Taille de la signature */
+    height: 50px;
+  }

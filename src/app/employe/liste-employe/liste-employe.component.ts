@@ -24,6 +24,7 @@ import { DiplomeService } from '../../diplome/service/diplome.service';
 
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { FormationService } from '../../formation/service/formation.service';
 @Component({
   selector: 'app-liste-employe',
   imports: [InputTextModule,TableModule,FormsModule, TagModule,CommonModule,CardModule,DialogModule,TooltipModule,BadgeModule,ProgressBarModule , ButtonModule],
@@ -64,8 +65,27 @@ export class ListeEmployeComponent  implements OnInit{
       pdf.save('profil_employe.pdf'); // Generated PDF file name
     });
   }
-  constructor(private employeService: EmoloyeService, private router: Router,private stageService: StageService,private diplomeService: DiplomeService ) {}
+  constructor(private employeService: EmoloyeService,
+     private router: Router,
+     private stageService: StageService,
+     private diplomeService: DiplomeService,
+     private formationService: FormationService ) {}
+     formations: any[] = []; 
+     loadFormations(employeId: number): void {
+      this.formationService.getFormationsWithDetailsByEmploye(employeId).subscribe({
+        next: (formations) => {
+          this.formations = formations;
+          console.log('Formations récupérées:', formations);
+        },
+        error: (err) => {
+          console.error('Erreur lors de la récupération des formations:', err);
+        }
+      });
+    }
 
+
+
+    
   ngOnInit(): void {
     this.fetchEmployes();
    
@@ -199,6 +219,7 @@ calculateExperienceDuration(dateDebut: string, dateFin: string): number {
   this.loadExperiencesAnterieures(); 
   this.loadPostesByEmploye(employe.id);
   this.loadStages(employe.id);
+  this.loadFormations(employe.id); 
   this.loadDiplomes(employe.id);
     this.displayProfile = true; // Afficher la fenêtre modale
   }
