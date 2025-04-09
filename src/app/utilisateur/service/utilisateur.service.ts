@@ -30,6 +30,8 @@ export class UtilisateurService {
   resetPassword(userId: number): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${userId}/reset-password`, {});
   }
-  
+  getResponsables(): Observable<Utilisateur[]> {
+    return this.http.get<Utilisateur[]>(`${this.apiUrl}/responsables`);
+  }
   
 }

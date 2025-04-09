@@ -25,6 +25,7 @@ import { UtilisateurComponent } from './utilisateur/utilisateur/utilisateur.comp
 import { RecrutementComponent } from './compatibilte/recrutement/recrutement.component';
 import { ListNotificationsComponent } from './notification/list-notifications/list-notifications.component';
 import { guardGuard } from './auth/guard/guard.guard';
+import { FormationComponent } from './formation/formation.component';
 
 
 export const routes: Routes = [
@@ -55,5 +56,6 @@ export const routes: Routes = [
   { path: 'compatibilite/:posteId', component: RecrutementComponent },
   { path: 'chart', component: RecrutementComponent },
   { path: 'notifications', component:ListNotificationsComponent},
+  { path: 'Formation', component:FormationComponent},
 
 ];

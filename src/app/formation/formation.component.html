@@ -1,1 +1,177 @@
-<p>formation works!</p>
+<!-- Bouton pour ouvrir la boîte de dialogue -->
+<button pButton type="button" label="Créer une formation" (click)="openDialog()"></button>
+<!-- Ajoutez cette ligne dans la section <head> de votre index.html -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+<div class="table-container">
+<p-card header="Liste des Formations" [style]="{ width: '79%' }">
+    <p-table [value]="formations" [rows]="10" [paginator]="true" [globalFilterFields]="['titre', 'description', 'typeFormation', 'sousTypeFormation', 'responsableEvaluationExterne']">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Type de Formation</th>
+            <th>Sous Type de Formation</th>
+            <th>Date de début</th>
+            <th>Date de fin</th>
+            <th>Responsable d'évaluation</th>
+            <th>les participants </th>
+            <th [style]="{ width: '1%' }">status</th>
+          </tr>
+        </ng-template>
+      
+        <ng-template pTemplate="body" let-formation>
+          <tr>
+            <td>{{ formation.titre }}</td>
+            <td>{{ formation.description }}</td>
+            <td>{{ formation.typeFormation }}</td>
+            <td>{{ formation.sousTypeFormation }}</td>
+            <td>{{ formation.dateDebutPrevue | date: 'shortDate' }}</td>
+            <td>{{ formation.dateFinPrevue | date: 'shortDate' }}</td>
+            <td>{{ formation.responsableEvaluation?.nom || formation.responsableEvaluationExterne || 'N/A' }}</td>
+            <td>
+                <i class="pi pi-users" style="color: blue;"(click)="showParticipants(formation)" >
+                <i class="pi pi-users" style="color: blue;"></i></i>
+              </td>
+              
+
+
+            <td>
+                <!-- Affichage dynamique du tag en fonction de la date de fin -->
+                <p-tag [severity]="getStatusSeverity(formation.dateFinPrevue)" 
+                       [value]="getFormationStatus(formation.dateFinPrevue)">
+                </p-tag>
+              </td>
+              
+          </tr>
+        </ng-template>
+      </p-table>
+      
+  </p-card>
+</div>
+<p-dialog header="Liste des Participants" [(visible)]="displayDialog" [modal]="true" [closable]="true" [style]="{ width: '60vw' }">
+    <p-table *ngIf="selectedFormation?.employes" [value]="selectedFormation.employes" [rows]="5" [paginator]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Nom</th>
+            <th>Matricule</th>
+            <th>Email</th>
+            <th>Date de Naissance</th>
+            <th>Date de Recrutement</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-employe>
+          <tr>
+            <td>{{ employe.nom }} {{ employe.prenom }}</td>
+            <td>{{ employe.matricule }}</td>
+            <td>{{ employe.email }}</td>
+            <td>{{ employe.dateNaissance | date: 'shortDate' }}</td>
+            <td>{{ employe.dateRecrutement | date: 'shortDate' }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+      
+  </p-dialog>
+<!-- Dialogue PrimeNG -->
+<p-dialog header="Créer une Formation" [(visible)]="dialogVisible" [modal]="true" [closable]="false" [style]="{width: '50vw'}">
+  <form [formGroup]="formationForm" (ngSubmit)="submitFormation()">
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="titre">Titre</label>
+        <input pInputText id="titre" formControlName="titre" />
+      </div>
+
+      <div class="p-field">
+        <label for="description">Description</label>
+        <textarea pInputTextarea id="description" formControlName="description"></textarea>
+      </div>
+
+      <div class="p-field">
+        <label for="typeFormation">Type de Formation</label>
+        <p-dropdown id="typeFormation" formControlName="typeFormation" 
+                    [options]="typeFormations" placeholder="Sélectionner un type">
+        </p-dropdown>
+      </div>
+
+      <div class="p-field">
+        <label for="sousTypeFormation">Sous-Type de Formation</label>
+        <p-dropdown id="sousTypeFormation" formControlName="sousTypeFormation" 
+                    [options]="sousTypeFormations" placeholder="Sélectionner un sous-type">
+        </p-dropdown>
+      </div>
+
+      <div class="p-field">
+        <label for="dateDebutPrevue">Date de début</label>
+        <p-calendar id="dateDebutPrevue" formControlName="dateDebutPrevue" [showIcon]="true"></p-calendar>
+      </div>
+
+      <div class="p-field">
+        <label for="dateFinPrevue">Date de fin</label>
+        <p-calendar id="dateFinPrevue" formControlName="dateFinPrevue" [showIcon]="true"></p-calendar>
+      </div>
+
+      <!-- Sélection du type de responsable -->
+     <!-- Sélection du type de responsable -->
+<div class="p-field">
+    <label for="responsableType">Type de responsable</label>
+    <p-dropdown 
+      id="responsableType" 
+      formControlName="responsableType" 
+      [options]="['INTERNE', 'EXTERNE']" 
+      placeholder="Sélectionner un type de responsable"
+      (onChange)="onResponsableTypeChange($event.value)">
+    </p-dropdown>
+  </div>
+  
+  <!-- Affichage de l'input pour le responsable interne si sélectionné -->
+  <div *ngIf="selectedResponsableType === 'INTERNE'">
+    <div class="p-field">
+      <label for="responsableEvaluationId">Responsable interne</label>
+      <p-dropdown
+        id="responsableEvaluationId"
+        formControlName="responsableEvaluationId"
+        [options]="responsables"
+        optionLabel="nom"
+        optionValue="id"
+        placeholder="Sélectionner un responsable"
+      ></p-dropdown>
+    </div>
+  </div>
+  
+  <!-- Affichage de l'input pour le responsable externe si sélectionné -->
+  <div *ngIf="selectedResponsableType === 'EXTERNE'">
+    <div class="p-field">
+      <label for="responsableEvaluationExterne">Responsable externe</label>
+      <input pInputText id="responsableEvaluationExterne" formControlName="responsableEvaluationExterne" />
+    </div>
+  </div>
+ <!-- MultiSelect pour sélectionner des employés -->
+<div class="p-field">
+    <form [formGroup]="formationForm" class="card flex justify-center">
+      <p-multiselect 
+        [options]="cities" 
+        formControlName="selectedCities" 
+        placeholder="Sélectionner des employés" 
+        [maxSelectedLabels]="3" 
+        styleClass="w-full md:w-80" 
+        [filter]="true"
+        filterPlaceholder="Rechercher un employé"
+        optionLabel="name"
+        optionValue="code">  <!-- Nous utilisons 'code' (l'ID de l'employé) comme valeur -->
+      
+        <ng-template let-item pTemplate="item">
+          <div>{{ item.name }} - Matricule: {{ item.matricule }}</div>
+        </ng-template>
+      
+      </p-multiselect>
+    </form>
+  </div>
+  
+    </div>
+
+    <div class="p-d-flex p-jc-end">
+      <button pButton type="button" label="Annuler" class="p-button-secondary" (click)="closeDialog()"></button>
+      <button pButton type="submit" label="Créer" class="p-ml-2"></button>
+    </div>
+  </form>
+</p-dialog>
